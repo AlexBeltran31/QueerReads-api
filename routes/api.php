@@ -8,17 +8,19 @@ Route::get('/ping', function () {
     return response()->json(['message' => 'API working']);
 });
 
-Route::middleware('auth:api')->get('/test-auth', function (Request $request) {
-    return response()->json([
-        'message' => 'Auth OK',
-        'user' => $request->user(),
-    ]);
-});
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/users/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::get('/admin/test', function (Request $request) {
+        return response()->json([
+            'message' => 'Admin access granted',
+            'user' => $request->user(),
+        ]);
+    });
 });
