@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\UserController;
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'API working']);
@@ -23,4 +24,5 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
             'user' => $request->user(),
         ]);
     });
+    Route::get('/admin/users', [UserController::class, 'index']);
 });
