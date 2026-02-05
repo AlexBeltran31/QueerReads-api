@@ -27,4 +27,5 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     });
     Route::get('/admin/users', [UserController::class, 'index']);
     Route::post('/admin/books', [BookController::class, 'store']);
+    Route::get('/admin/books', [\App\Http\Controllers\Api\Admin\BookController::class, 'index']);
 });
