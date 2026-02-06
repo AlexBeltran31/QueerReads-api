@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\UserController;
-use App\Http\Controllers\Api\Admin\BookController;
+use App\Http\Controllers\Api\Admin\BookController as AdminBookController;
+use App\Http\Controllers\Api\BookController as PublicBookController;
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'API working']);
@@ -26,6 +27,9 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
         ]);
     });
     Route::get('/admin/users', [UserController::class, 'index']);
-    Route::post('/admin/books', [BookController::class, 'store']);
-    Route::get('/admin/books', [\App\Http\Controllers\Api\Admin\BookController::class, 'index']);
+    Route::post('/admin/books', [AdminBookController::class, 'store']);
+    Route::get('/admin/books', [AdminBookController::class, 'index']);
 });
+
+Route::get('/books', [PublicBookController::class, 'index']);
+Route::get('/books/{book}', [PublicBookController::class, 'show']);
