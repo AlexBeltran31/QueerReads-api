@@ -29,6 +29,8 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index']);
     Route::post('/admin/books', [AdminBookController::class, 'store']);
     Route::get('/admin/books', [AdminBookController::class, 'index']);
+    Route::put('/admin/books/{book}', [AdminBookController::class, 'update']);
+    Route::delete('/admin/books/{book}', [AdminBookController::class, 'destroy']);
 });
 
 Route::get('/books', [PublicBookController::class, 'index']);
