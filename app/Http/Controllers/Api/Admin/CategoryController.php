@@ -25,4 +25,10 @@ class CategoryController extends Controller
 
         return response()->json($category, 200);
     }
+
+    public function destroy(Category $category) {
+        $category->delete();
+
+        return response()->noContent();
+    }
 }
