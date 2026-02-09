@@ -3,25 +3,19 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\User;
 use App\Models\Category;
-use Laravel\Passport\Passport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AdminCategoryListTest extends TestCase
+class PublicCategoryListTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function admin_can_list_categories() {
-        $admin = User::factory()->create(['role' => 'admin']);
-
+    public function anyone_can_list_categories() {
         Category::factory()->create(['name' => 'Poetry', 'slug' => 'poetry']);
         Category::factory()->create(['name' => 'Essay', 'slug' => 'essay']);
 
-        Passport::actingAs($admin);
-
-        $response = $this->getJson('/api/admin/categories');
+        $response = $this->getJson('/api/categories');
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['slug' => 'poetry'])

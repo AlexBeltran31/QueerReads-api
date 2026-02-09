@@ -18,8 +18,8 @@ class AdminCategoryAuthorizationTest extends TestCase
         Passport::actingAs($user);
 
         $payload = [
-            'name' => 'Queer Poetry',
-            'slug' => 'queer poetry',
+            'name' => 'Poetry',
+            'slug' => 'poetry',
         ];
 
         $response = $this->postJson('/api/admin/categories', $payload);
@@ -27,7 +27,7 @@ class AdminCategoryAuthorizationTest extends TestCase
         $response->assertStatus(403);
 
         $this->assertDatabaseMissing('categories', [
-            'slug' => 'queer poetry',
+            'slug' => 'poetry',
         ]);
     }
 }

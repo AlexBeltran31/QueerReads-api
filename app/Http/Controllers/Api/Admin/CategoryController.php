@@ -17,4 +17,12 @@ class CategoryController extends Controller
     public function index() {
         return response()->json(Category::all(), 200);
     }
+
+    public function update(Request $request, Category $category) {
+        $category->update(
+            $request->only('name', 'slug')
+        );
+
+        return response()->json($category, 200);
+    }
 }

@@ -18,8 +18,8 @@ class AdminCategoryCreateTest extends TestCase
         Passport::actingAs($admin);
 
         $payload = [
-            'name' => 'Queer Poetry',
-            'slug' => 'queer poetry',
+            'name' => 'Poetry',
+            'slug' => 'poetry',
         ];
 
         $response = $this->postJson('/api/admin/categories', $payload);
@@ -27,8 +27,8 @@ class AdminCategoryCreateTest extends TestCase
         $response->assertStatus(201);
 
         $this->assertDatabaseHas('categories', [
-            'name' => 'Queer Poetry',
-            'slug' => 'queer poetry',
+            'name' => 'Poetry',
+            'slug' => 'poetry',
         ]);
     }
 }

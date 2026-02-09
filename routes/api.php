@@ -6,7 +6,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Api\BookController as PublicBookController;
-use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Api\CategoryController as PublicCategoryController;
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'API working']);
@@ -32,9 +33,14 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/admin/books', [AdminBookController::class, 'index']);
     Route::put('/admin/books/{book}', [AdminBookController::class, 'update']);
     Route::delete('/admin/books/{book}', [AdminBookController::class, 'destroy']);
-    Route::post('/admin/categories', [CategoryController::class, 'store']);
-    Route::get('/admin/categories', [CategoryController::class, 'index']);
+    Route::post('/admin/categories', [AdminCategoryController::class, 'store']);
+    Route::get('/admin/categories', [AdminCategoryController::class, 'index']);
+    Route::put(
+        '/admin/categories/{category}',
+        [AdminCategoryController::class, 'update']
+    );
 });
 
 Route::get('/books', [PublicBookController::class, 'index']);
 Route::get('/books/{book}', [PublicBookController::class, 'show']);
+Route::get('/categories', [PublicCategoryController::class, 'index']);
