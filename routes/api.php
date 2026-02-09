@@ -33,6 +33,7 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::put('/admin/books/{book}', [AdminBookController::class, 'update']);
     Route::delete('/admin/books/{book}', [AdminBookController::class, 'destroy']);
     Route::post('/admin/categories', [CategoryController::class, 'store']);
+    Route::get('/admin/categories', [CategoryController::class, 'index']);
 });
 
 Route::get('/books', [PublicBookController::class, 'index']);

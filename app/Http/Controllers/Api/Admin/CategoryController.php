@@ -13,4 +13,8 @@ class CategoryController extends Controller
 
         return response()->json($category, 201);
     }
+
+    public function index() {
+        return response()->json(Category::all(), 200);
+    }
 }
