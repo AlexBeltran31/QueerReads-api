@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,6 +16,6 @@ class Category extends Model
     ];
 
     public function books() {
-        return $this->belongsToMany(Book::class);
+        return $this->belongsToMany(Book::class, 'book_category');
     }
 }

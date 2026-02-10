@@ -26,12 +26,24 @@ class BookController extends Controller {
 
     public function update(Request $request, Book $book) {
         $validated = $request->validate([
-            'title' => 'required|string|max:250',
-            'author' => 'required|string|max:250',
-            'description' => 'nullable|string',
+            'title' => 'sometimes|required|string|max:250',
+            'author' => 'sometimes|required|string|max:250',
+            'description' => 'sometimes|nullable|string',
+            'categories' => 'sometimes|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
-        $book->update($validated);
+        $book->update(
+            collect($validated)->only([
+                'title',
+                'author',
+                'description',
+            ])->toArray()
+            );
+
+            if($request->has('categories')) {
+                $book->categories()->sync($request->input('categories'));
+            }
 
         return response()->json($book, 200);
     }
