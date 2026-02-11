@@ -38,6 +38,7 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::delete('/admin/books/{book}', [AdminBookController::class, 'destroy']);
     Route::post('/admin/categories', [AdminCategoryController::class, 'store']);
     Route::get('/admin/categories', [AdminCategoryController::class, 'index']);
+    Route::get('/admin/users/{user}', [AdminUserController::class, 'show']);
     Route::put(
         '/admin/categories/{category}',
         [AdminCategoryController::class, 'update']
