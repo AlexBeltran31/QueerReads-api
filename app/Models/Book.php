@@ -19,4 +19,10 @@ class Book extends Model
     public function categories() {
         return $this->belongsToMany(Category::class, 'book_category');
     }
+
+    public function readers() {
+        return $this->belongsToMany(User::class, 'reading_list')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }

@@ -51,4 +51,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function readingList() {
+        return $this->belongsToMany(Book::class, 'reading_list')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }
