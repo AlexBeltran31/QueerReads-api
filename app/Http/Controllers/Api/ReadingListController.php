@@ -57,4 +57,20 @@ class ReadingListController extends Controller
             'message' => 'Reading status updated'
         ], 200);
     }
+
+    public function destroy(Request $request, Book $book) {
+        $user = $request->user();
+
+        if (!$user->readingList()->where('book_id', $book->id)->exists()) {
+            return response()->json([
+                'message' => 'Book not in reading list'
+            ], 404);
+        }
+
+        $user->readingList()->detach($book->id);
+
+        return response()->json([
+            'message' => 'Book removed from reading list'
+        ], 200);
+    }
 }
