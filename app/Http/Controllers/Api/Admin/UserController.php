@@ -12,4 +12,8 @@ class UserController extends Controller
             User::all()
         );
     }
+
+    public function show(User $user) {
+        return response()->json($user, 200);
+    }
 }
