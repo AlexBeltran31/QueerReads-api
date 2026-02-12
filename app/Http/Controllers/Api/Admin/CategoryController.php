@@ -9,7 +9,12 @@ use App\Http\Controllers\Controller;
 class CategoryController extends Controller
 {
     public function store(Request $request) {
-        $category = Category::create($request->only('name', 'slug'));
+        $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'slug' => 'required|string|max:255|unique:categories,slug',
+        ]);
+
+        $category = Category::create($validated);
 
         return response()->json($category, 201);
     }
