@@ -25,6 +25,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/users/{user}', [PublicUserController::class, 'destroy']);
     Route::get('/reading-list', [ReadingListController::class, 'index']);
     Route::post('/reading-list/{book}', [ReadingListController::class, 'store']);
+    Route::put('/reading-list/{book}', [ReadingListController::class, 'update']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
