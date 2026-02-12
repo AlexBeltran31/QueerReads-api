@@ -48,3 +48,7 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 Route::get('/books', [PublicBookController::class, 'index']);
 Route::get('/books/{book}', [PublicBookController::class, 'show']);
 Route::get('/categories', [PublicCategoryController::class, 'index']);
+Route::get(
+    '/categories/{category}/books',
+    [PublicCategoryController::class, 'books']
+);
