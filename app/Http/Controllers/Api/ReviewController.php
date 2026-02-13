@@ -49,4 +49,13 @@ class ReviewController extends Controller
             'message' => 'Review created successfully'
         ], 201);
     }
+
+    public function index(Book $book) {
+        $reviews = $book->reviews()
+                        ->with('user')
+                        ->latest()
+                        ->get();
+
+        return response()->json($reviews, 200);
+    }
 }

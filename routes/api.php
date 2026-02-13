@@ -65,3 +65,4 @@ Route::get(
     '/categories/{category}/books',
     [PublicCategoryController::class, 'books']
 );
+Route::get('/books/{book}/reviews', [ReviewController::class, 'index']);
