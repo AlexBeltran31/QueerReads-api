@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\BookController as PublicBookController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Api\ReadingListController;
+use App\Http\Controllers\Api\ReviewController;
 
 Route::get('/ping', function () {
     return response()->json(['message' => 'API working']);
@@ -23,10 +24,13 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/users/{user}', [PublicUserController::class, 'update']);
     Route::delete('/users/{user}', [PublicUserController::class, 'destroy']);
+    
     Route::get('/reading-list', [ReadingListController::class, 'index']);
     Route::post('/reading-list/{book}', [ReadingListController::class, 'store']);
     Route::put('/reading-list/{book}', [ReadingListController::class, 'update']);
     Route::delete('/reading-list/{book}', [ReadingListController::class, 'destroy']);
+
+    Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
