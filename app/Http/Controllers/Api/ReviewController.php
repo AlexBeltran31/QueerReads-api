@@ -58,4 +58,28 @@ class ReviewController extends Controller
 
         return response()->json($reviews, 200);
     }
+
+    public function destroy(Request $request, Review $review) {
+        $user = $request->user();
+
+        if ($user->role === 'admin') {
+            $review->delete();
+
+            return response()->json([
+                'message' => 'Review deleted'
+            ], 200);
+        }
+
+        if ($review->user_id !== $user->id) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $review->delete();
+
+        return response()->json([
+            'message' => 'Review deleted'
+        ], 200);
+    }
 }

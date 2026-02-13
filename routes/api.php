@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/reading-list/{book}', [ReadingListController::class, 'destroy']);
 
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
