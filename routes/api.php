@@ -32,6 +32,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
+
+    Route::get('/books/random-to-read', [PublicBookController::class, 'randomToRead']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
