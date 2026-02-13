@@ -26,4 +26,8 @@ class Book extends Model
                     ->withPivot('status')
                     ->withTimestamps();
     }
+
+    public function reviews() {
+        return $this->hasMany(Review::class);
+    }
 }
