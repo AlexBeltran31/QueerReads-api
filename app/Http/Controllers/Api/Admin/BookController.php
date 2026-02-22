@@ -13,11 +13,14 @@ class BookController extends Controller {
             'title' => 'required|string|max:250',
             'author' => 'required|string|max:250',
             'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $book = Book::create($validated);
 
-        return response()->json($book, 201);
+        return response()->json(
+            $book->load('category'),
+            201);
     }
 
     public function index() {
