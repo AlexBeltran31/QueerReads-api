@@ -59,6 +59,7 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
         '/admin/categories/{category}',
         [AdminCategoryController::class, 'destroy']
     );
+    Route::get('/admin/books/{book}', [AdminBookController::class, 'show']);
 });
 
 Route::get('/books', [PublicBookController::class, 'index']);

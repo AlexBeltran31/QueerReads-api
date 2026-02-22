@@ -33,7 +33,10 @@ class BookController extends Controller {
     }
 
     public function index() {
-        return response()->json(Book::all(), 200);
+        return response()->json(
+            \App\Models\Book::with('categories')->get(),
+            200
+        );
     }
 
     public function update(Request $request, Book $book) {
@@ -64,5 +67,12 @@ class BookController extends Controller {
         $book->delete();
 
         return response()->noContent();
+    }
+
+    public function show(Book $book) {
+        return response()->json(
+            $book->load('categories'),
+            200
+        );
     }
 }
