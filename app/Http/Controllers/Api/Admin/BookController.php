@@ -41,26 +41,24 @@ class BookController extends Controller {
 
     public function update(Request $request, Book $book) {
         $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:250',
-            'author' => 'sometimes|required|string|max:250',
-            'description' => 'sometimes|nullable|string',
-            'categories' => 'sometimes|array',
-            'categories.*' => 'exists:categories,id',
+            'title' => 'required|string|max:250',
+            'author' => 'required|string|max:250',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $book->update(
-            collect($validated)->only([
-                'title',
-                'author',
-                'description',
-            ])->toArray()
-            );
+        $book->update([
+            'title' => $validated['title'],
+            'author' => $validated['author'],
+            'description' => $validated['description'] ?? null,
+        ]);
 
-            if($request->has('categories')) {
-                $book->categories()->sync($request->input('categories'));
-            }
+        $book->categories()->sync([$validated['category_id']]);
 
-        return response()->json($book, 200);
+        return response()->json(
+            $book->load('categories'),
+            200
+        );
     }
 
     public function destroy(Book $book) {

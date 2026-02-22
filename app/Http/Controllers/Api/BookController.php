@@ -9,8 +9,17 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
-    public function index() {
-        return BookResource::collection(Book::all());
+    public function index(Request $request) {
+        $query = Book::query();
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('author', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        return $query->with('categories')->get();
     }
 
     public function show(Book $book) {
