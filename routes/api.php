@@ -5,8 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController as PublicUserController;
 use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Api\Admin\BookController as AdminBookController;
-use App\Http\Controllers\Api\BookController as PublicBookController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Api\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Api\ReadingListController;
@@ -33,7 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
-    Route::get('/books/random-to-read', [PublicBookController::class, 'randomToRead']);
+    Route::get('/books/random-to-read', [BookController::class, 'randomToRead']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
@@ -49,13 +48,13 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/admin/users/{user}', [AdminUserController::class, 'show']);
     Route::put('/admin/categories/{category}', [AdminCategoryController::class, 'update']);
     Route::delete('/admin/categories/{category}', [AdminCategoryController::class, 'destroy']);
-    Route::post('/books', [AdminBookController::class, 'store']);
-    Route::put('/books/{book}', [AdminBookController::class, 'update']);
-    Route::delete('/books/{book}', [AdminBookController::class, 'destroy']);
+    Route::post('/books', [BookController::class, 'store']);
+    Route::put('/books/{book}', [BookController::class, 'update']);
+    Route::delete('/books/{book}', [BookController::class, 'destroy']);
 });
 
-Route::get('/books', [PublicBookController::class, 'index']);
-Route::get('/books/{book}', [PublicBookController::class, 'show']);
+Route::get('/books', [BookController::class, 'index']);
+Route::get('/books/{book}', [BookController::class, 'show']);
 Route::get('/categories', [PublicCategoryController::class, 'index']);
 Route::get(
     '/categories/{category}/books',
