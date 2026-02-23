@@ -36,18 +36,17 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
-    Route::get('/admin/test', function (Request $request) {
-        return response()->json([
-            'message' => 'Admin access granted',
-            'user' => $request->user(),
-        ]);
-    });
-    Route::get('/admin/users', [AdminUserController::class, 'index']);
-    Route::post('/admin/categories', [AdminCategoryController::class, 'store']);
-    Route::get('/admin/categories', [AdminCategoryController::class, 'index']);
-    Route::get('/admin/users/{user}', [AdminUserController::class, 'show']);
-    Route::put('/admin/categories/{category}', [AdminCategoryController::class, 'update']);
-    Route::delete('/admin/categories/{category}', [AdminCategoryController::class, 'destroy']);
+
+    // Users management
+    Route::get('/users', [AdminUserController::class, 'index']);
+    Route::get('/users/{user}', [AdminUserController::class, 'show']);
+
+    // Categories management
+    Route::post('/categories', [AdminCategoryController::class, 'store']);
+    Route::put('/categories/{category}', [AdminCategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy']);
+
+    // Books management
     Route::post('/books', [BookController::class, 'store']);
     Route::put('/books/{book}', [BookController::class, 'update']);
     Route::delete('/books/{book}', [BookController::class, 'destroy']);
