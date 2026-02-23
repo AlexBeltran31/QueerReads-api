@@ -44,22 +44,14 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
         ]);
     });
     Route::get('/admin/users', [AdminUserController::class, 'index']);
-    Route::post('/admin/books', [AdminBookController::class, 'store']);
-    Route::get('/admin/books', [AdminBookController::class, 'index']);
-    Route::put('/admin/books/{book}', [AdminBookController::class, 'update']);
-    Route::delete('/admin/books/{book}', [AdminBookController::class, 'destroy']);
     Route::post('/admin/categories', [AdminCategoryController::class, 'store']);
     Route::get('/admin/categories', [AdminCategoryController::class, 'index']);
     Route::get('/admin/users/{user}', [AdminUserController::class, 'show']);
-    Route::put(
-        '/admin/categories/{category}',
-        [AdminCategoryController::class, 'update']
-    );
-    Route::delete(
-        '/admin/categories/{category}',
-        [AdminCategoryController::class, 'destroy']
-    );
-    Route::get('/admin/books/{book}', [AdminBookController::class, 'show']);
+    Route::put('/admin/categories/{category}', [AdminCategoryController::class, 'update']);
+    Route::delete('/admin/categories/{category}', [AdminCategoryController::class, 'destroy']);
+    Route::post('/books', [AdminBookController::class, 'store']);
+    Route::put('/books/{book}', [AdminBookController::class, 'update']);
+    Route::delete('/books/{book}', [AdminBookController::class, 'destroy']);
 });
 
 Route::get('/books', [PublicBookController::class, 'index']);
