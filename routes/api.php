@@ -23,14 +23,14 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/users/{user}', [PublicUserController::class, 'update']);
     Route::delete('/users/{user}', [PublicUserController::class, 'destroy']);
-    
-    Route::get('/reading-list', [ReadingListController::class, 'index']);
-    Route::post('/reading-list/{book}', [ReadingListController::class, 'store']);
-    Route::put('/reading-list/{book}', [ReadingListController::class, 'update']);
-    Route::delete('/reading-list/{book}', [ReadingListController::class, 'destroy']);
 
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
+
+    Route::post('/books/{book}/users/{user}', [ReadingListController::class, 'store']);
+    Route::patch('/books/{book}/users/{user}', [ReadingListController::class, 'update']);
+    Route::delete('/books/{book}/users/{user}', [ReadingListController::class, 'destroy']);
+    Route::get('/users/{user}/books', [ReadingListController::class, 'index']);
 
     Route::get('/books/random-to-read', [BookController::class, 'randomToRead']);
 });
@@ -55,8 +55,5 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 Route::get('/books', [BookController::class, 'index']);
 Route::get('/books/{book}', [BookController::class, 'show']);
 Route::get('/categories', [PublicCategoryController::class, 'index']);
-Route::get(
-    '/categories/{category}/books',
-    [PublicCategoryController::class, 'books']
-);
+Route::get('/categories/{category}/books', [PublicCategoryController::class, 'books']);
 Route::get('/books/{book}/reviews', [ReviewController::class, 'index']);

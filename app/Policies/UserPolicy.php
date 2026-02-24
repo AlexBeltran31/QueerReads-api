@@ -11,4 +11,8 @@ class UserPolicy
         return $authUser->role === 'admin'
             && $authUser->id !== $user->id;
     }
+
+    public function manageReading(User $authUser, User $user): bool {
+        return $authUser->id === $user->id;
+    }
 }
