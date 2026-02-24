@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/users/{user}/books', [ReadingListController::class, 'index']);
 
     Route::get('/books/random-to-read', [BookController::class, 'randomToRead']);
+    Route::put('/users/{user}/password', [PublicUserController::class, 'updatePassword']);
 });
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
