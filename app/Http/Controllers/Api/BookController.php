@@ -23,7 +23,10 @@ class BookController extends Controller
     }
 
     public function show(Book $book) {
-        return new BookResource($book);
+        return response()->json(
+            $book->load('categories'),
+            200
+        );
     }
 
     public function randomToRead(Request $request) {
@@ -41,5 +44,55 @@ class BookController extends Controller
         }
 
         return response()->json($book, 200);
+    }
+
+    public function store(Request $request) {
+        $validated = $request->validate([
+            'title' => 'required|string|max:250',
+            'author' => 'required|string|max:250',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $book = Book::create([
+            'title' => $validated['title'],
+            'author' => $validated['author'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        $book->categories()->attach($validated['category_id']);
+
+        return response()->json(
+            $book->load('categories'),
+            201
+        );
+    }
+
+    public function update(Request $request, Book $book) {
+        $validated = $request->validate([
+            'title' => 'required|string|max:250',
+            'author' => 'required|string|max:250',
+            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $book->update([
+            'title' => $validated['title'],
+            'author' => $validated['author'],
+            'description' => $validated['description'] ?? null,
+        ]);
+
+        $book->categories()->sync([$validated['category_id']]);
+
+        return response()->json(
+            $book->load('categories'),
+            200
+        );
+    }
+
+    public function destroy(Book $book) {
+        $book->delete();
+
+        return response()->noContent();
     }
 }

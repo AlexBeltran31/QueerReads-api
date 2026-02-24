@@ -3,74 +3,56 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
 
 class ReadingListController extends Controller
 {
-    public function index(Request $request) {
-        $books = $request->user()
-                         ->readingList()
-                         ->with('categories')
-                         ->get();
+    public function index(User $user)
+    {
+        $this->authorize('manageReading', $user);
 
-        return response()->json($books, 200);
+        return response()->json($user->readingList, 200);
     }
 
-    public function store(Request $request, Book $book) {
-        $user = $request->user();
+    public function store(Request $request, Book $book, User $user)
+    {
+        $this->authorize('manageReading', $user);
 
-        if ($user->readingList()->where('book_id', $book->id)->exists()) {
-            return response()->json([
-                'message' => 'Book already in reading list'
-            ], 409);
-        }
-
-        $user->readingList()->attach($book->id, [
-            'status' => 'to_read'
+        $validated = $request->validate([
+            'status' => 'required|in:to_read,reading,finished'
         ]);
 
-        return response()->json([
-            'message' => 'Book added to reading list'
-        ], 201);
+        $user->readingList()->syncWithoutDetaching([
+            $book->id => ['status' => $validated['status']]
+        ]);
+
+        return response()->json(['message' => 'Book added'], 201);
     }
 
-    public function update(Request $request, Book $book) {
-        $request->validate([
-        'status' => ['required', Rule::in(['to_read', 'reading', 'finished'])],
+    public function update(Request $request, Book $book, User $user)
+    {
+        $this->authorize('manageReading', $user);
+
+        $validated = $request->validate([
+            'status' => 'required|in:to_read,reading,finished'
         ]);
 
-        $user = $request->user();
+        $user->readingList()->updateExistingPivot(
+            $book->id,
+            ['status' => $validated['status']]
+        );
 
-        if (!$user->readingList()->where('book_id', $book->id)->exists()) {
-            return response()->json([
-                'message' => 'Book not in reading list'
-            ], 404);
-        }
-
-        $user->readingList()->updateExistingPivot($book->id, [
-            'status' => $request->status
-        ]);
-
-        return response()->json([
-            'message' => 'Reading status updated'
-        ], 200);
+        return response()->json(['message' => 'Status updated']);
     }
 
-    public function destroy(Request $request, Book $book) {
-        $user = $request->user();
-
-        if (!$user->readingList()->where('book_id', $book->id)->exists()) {
-            return response()->json([
-                'message' => 'Book not in reading list'
-            ], 404);
-        }
+    public function destroy(Book $book, User $user)
+    {
+        $this->authorize('manageReading', $user);
 
         $user->readingList()->detach($book->id);
 
-        return response()->json([
-            'message' => 'Book removed from reading list'
-        ], 200);
+        return response()->noContent();
     }
 }
