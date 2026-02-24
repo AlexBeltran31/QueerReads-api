@@ -25,12 +25,8 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function destroy(Request $request, User $user) {
-        $authUser = $request->user();
-
-        if ($authUser->id !== $user->id && $authUser->role !== 'admin') {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
+    public function destroy(User $user) {
+        $this->authorize('delete', $user);
 
         $user->delete();
 
