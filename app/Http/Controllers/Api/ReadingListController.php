@@ -3,41 +3,43 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
-use App\Models\User;
 
 class ReadingListController extends Controller
 {
-    public function index(User $user) {
+    public function index(User $user)
+    {
         $this->authorize('manageReading', $user);
 
-        return response()->json($user->books, 200);
+        return response()->json($user->readingList, 200);
     }
 
-    public function store(Request $request, Book $book, User $user) {
+    public function store(Request $request, Book $book, User $user)
+    {
         $this->authorize('manageReading', $user);
 
         $validated = $request->validate([
             'status' => 'required|in:to_read,reading,finished'
         ]);
 
-        $user->books()->syncWithoutDetaching([
+        $user->readingList()->syncWithoutDetaching([
             $book->id => ['status' => $validated['status']]
         ]);
 
-        return response()->json(['message' => 'Book attached'], 201);
+        return response()->json(['message' => 'Book added'], 201);
     }
 
-    public function update(Request $request, Book $book, User $user) {
+    public function update(Request $request, Book $book, User $user)
+    {
         $this->authorize('manageReading', $user);
 
         $validated = $request->validate([
             'status' => 'required|in:to_read,reading,finished'
         ]);
 
-        $user->books()->updateExistingPivot(
+        $user->readingList()->updateExistingPivot(
             $book->id,
             ['status' => $validated['status']]
         );
@@ -45,10 +47,11 @@ class ReadingListController extends Controller
         return response()->json(['message' => 'Status updated']);
     }
 
-    public function destroy(Book $book, User $user) {
+    public function destroy(Book $book, User $user)
+    {
         $this->authorize('manageReading', $user);
 
-        $user->books()->detach($book->id);
+        $user->readingList()->detach($book->id);
 
         return response()->noContent();
     }
