@@ -22,7 +22,7 @@ class AdminBookListTest extends TestCase
 
         Passport::actingAs($admin);
 
-        $response = $this->getJson('/api/admin/books');
+        $response = $this->getJson('/api/books');
 
         $response->assertStatus(200)
                  ->assertJsonCount(3);

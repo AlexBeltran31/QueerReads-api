@@ -21,7 +21,7 @@ class AdminCategoryListTest extends TestCase
 
         Passport::actingAs($admin);
 
-        $response = $this->getJson('/api/admin/categories');
+        $response = $this->getJson('/api/categories');
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['slug' => 'poetry'])

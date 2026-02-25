@@ -19,7 +19,9 @@ class ReadingListStoreTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->postJson("/api/reading-list/{$book->id}");
+        $response = $this->postJson("/api/books/{$book->id}/users/{$user->id}", [
+                        'status' => 'to_read'
+                    ]);
 
         $response->assertStatus(201);
 
@@ -33,8 +35,9 @@ class ReadingListStoreTest extends TestCase
     /** @test */
     public function guest_cannot_add_book_to_reading_list() {
         $book = Book::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->postJson("/api/reading-list/{$book->id}");
+        $response = $this->postJson("/api/books/{$book->id}/users/{$user->id}");
 
         $response->assertStatus(401);
     }
@@ -50,7 +53,8 @@ class ReadingListStoreTest extends TestCase
             'status' => 'to_read'
         ]);
 
-        $response = $this->postJson("/api/reading-list/{$book->id}");
+        $response = $this->postJson("/api/books/{$book->id}/users/{$user->id}", [
+            'status' => 'to_read']);
 
         $response->assertStatus(409);
     }

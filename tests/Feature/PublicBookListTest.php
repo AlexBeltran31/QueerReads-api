@@ -17,6 +17,6 @@ class PublicBookListTest extends TestCase
         $response = $this->getJson('/api/books');
 
         $response->assertStatus(200)
-                 ->assertJsonCount(5, 'data');
+                 ->assertJsonCount(5);
     }
 }

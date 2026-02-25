@@ -21,11 +21,9 @@ class PublicBookShowTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertJson([
-                    'data' => [
-                        'id' => $book->id,
+                    'id' => $book->id,
                     'title' => 'Stone Butch Blues',
                     'author' => 'Leslie Feinberg',
-                    ]
-                 ]);
+                    ]);
     }
 }

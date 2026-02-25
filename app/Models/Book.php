@@ -30,4 +30,10 @@ class Book extends Model
     public function reviews() {
         return $this->hasMany(Review::class);
     }
+
+    public function users() {
+        return $this->belongsToMany(User::class, 'reading_list')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }

@@ -24,9 +24,9 @@ class ReadingListDeleteTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->deleteJson("/api/reading-list/{$book->id}");
+        $response = $this->deleteJson("/api/books/{$book->id}/users/{$user->id}");
 
-        $response->assertStatus(200);
+        $response->assertStatus(204);
 
         $this->assertDatabaseMissing('reading_list', [
             'user_id' => $user->id,
@@ -41,7 +41,7 @@ class ReadingListDeleteTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->deleteJson("/api/reading-list/{$book->id}");
+        $response = $this->deleteJson("/api/books/{$book->id}/users/{$user->id}");
 
         $response->assertStatus(404);
     }
@@ -49,8 +49,9 @@ class ReadingListDeleteTest extends TestCase
     /** @test */
     public function guest_cannot_remove_book_from_reading_list() {
         $book = Book::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->deleteJson("/api/reading-list/{$book->id}");
+        $response = $this->deleteJson("/api/books/{$book->id}/users/{$user->id}");
 
         $response->assertStatus(401);
     }

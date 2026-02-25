@@ -12,16 +12,16 @@ class UserDeleteTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_delete_own_account() {
+    public function user_cannot_delete_own_account() {
         $user = User::factory()->create();
 
         Passport::actingAs($user);
 
         $response = $this->deleteJson("/api/users/{$user->id}");
 
-        $response->assertStatus(204);
+        $response->assertStatus(403);
 
-        $this->assertDatabaseMissing('users', [
+        $this->assertDatabaseHas('users', [
             'id' => $user->id,
         ]);
     }
@@ -39,8 +39,11 @@ class UserDeleteTest extends TestCase
     }
 
     /** @test */
-    public function admin_can_delete_any_user() {
-        $admin = User::factory()->create(['role' => 'admin']);
+    public function admin_can_delete_other_user() {
+        $admin = User::factory()->create([
+            'role' => 'admin'
+        ]);
+
         $user = User::factory()->create();
 
         Passport::actingAs($admin);
@@ -51,6 +54,23 @@ class UserDeleteTest extends TestCase
 
         $this->assertDatabaseMissing('users', [
             'id' => $user->id,
+        ]);
+    }
+
+    /** @test */
+    public function admin_cannot_delete_self() {
+        $admin = User::factory()->create([
+            'role' => 'admin'
+        ]);
+
+        Passport::actingAs($admin);
+
+        $response = $this->deleteJson("/api/users/{$admin->id}");
+
+        $response->assertStatus(403);
+
+        $this->assertDatabaseHas('users', [
+            'id' => $admin->id,
         ]);
     }
 }

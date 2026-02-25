@@ -28,7 +28,7 @@ class AdminCategoryUpdateTest extends TestCase
         ];
 
         $response = $this->putJson(
-            "/api/admin/categories/{$category->id}",
+            "/api/categories/{$category->id}",
             $payload
         );
 

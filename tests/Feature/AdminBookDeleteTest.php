@@ -19,7 +19,7 @@ class AdminBookDeleteTest extends TestCase
 
         Passport::actingAs($admin);
 
-        $response = $this->deleteJson("/api/admin/books/{$book->id}");
+        $response = $this->deleteJson("/api/books/{$book->id}");
 
         $response->assertStatus(204);
 

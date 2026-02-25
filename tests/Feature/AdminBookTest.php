@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Category;
 use Laravel\Passport\Passport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -16,13 +17,15 @@ class AdminBookTest extends TestCase
         $admin = User::factory()->create([
             'role' => 'admin',
         ]);
+        $category = Category::factory()->create();
 
         Passport::actingAs($admin);
 
-        $response = $this->postJson('/api/admin/books', [
+        $response = $this->postJson('/api/books', [
             'title' => 'Stone Butch Blues',
             'author' => 'Leslie Feinberg',
             'description' => 'A classic queer novel',
+            'category_id' => $category->id,
         ]);
 
         $response->assertStatus(201)
