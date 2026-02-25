@@ -160,11 +160,25 @@ Run all tests:
 
     * cp .env.example .env
 
+
+        Edit the .env file and configure your database credentials:
+
+            DB_DATABASE=queerreads
+
+            DB_USERNAME=root
+
+            DB_PASSWORD=
+        
+        ⚠️ Make sure the database exists before running migrations.
+
+
     * php artisan key:generate
 
     * php artisan migrate
 
     * php artisan passport:install
+
+    * php artisan db:seed
 
     * php artisan serve
 ---
