@@ -20,6 +20,8 @@ This project was developed using Test-Driven Development (TDD) principles.
 -MySQL (development/production)
 
 -Git Flow workflow
+
+-Scribe (automatic API documentation)
 ---
 
 🔐 Authentication
@@ -181,6 +183,19 @@ Run all tests:
     * php artisan db:seed
 
     * php artisan serve
+---
+
+📚 API Documentation
+
+The API documentation was automatically generated using the **Scribe** package.
+
+To generate documentation:
+
+    php artisan screibe:generate
+
+After stating the server, access the documentation at:
+
+    http://127.0.0.1:8000/docs
 ---
 
 🔄 API Example Flow
