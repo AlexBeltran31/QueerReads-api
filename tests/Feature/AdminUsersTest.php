@@ -21,7 +21,7 @@ class AdminUsersTest extends TestCase
 
         Passport::actingAs($admin);
 
-        $response = $this->getJson('/api/admin/users');
+        $response = $this->getJson('/api/users');
 
         $response->assertStatus(200)
                  ->assertJsonCount(4);
@@ -37,7 +37,7 @@ class AdminUsersTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->getJson('/api/admin/users');
+        $response = $this->getJson('/api/users');
 
         $response->assertStatus(403);
     }

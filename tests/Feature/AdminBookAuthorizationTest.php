@@ -19,7 +19,7 @@ class AdminBookAuthorizationTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->postJson('/api/admin/books', [
+        $response = $this->postJson('/api/books', [
             'title' => 'Stone Butch Blues',
             'author' => 'Leslie Feinberg',
             'description' => 'A classic queer novel',

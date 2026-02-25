@@ -70,27 +70,27 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book) {
         $validated = $request->validate([
-            'title' => 'required|string|max:250',
-            'author' => 'required|string|max:250',
+            'title' => 'required|string',
+            'author' => 'required|string',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $book->update([
-            'title' => $validated['title'],
-            'author' => $validated['author'],
-            'description' => $validated['description'] ?? null,
-        ]);
+        $book->update($validated);
 
-        $book->categories()->sync([$validated['category_id']]);
+        if ($request->has('categories')) {
+            $book->categories()->sync($request->categories);
+        }
 
-        return response()->json(
-            $book->load('categories'),
-            200
-        );
+        return response()->json($book->load('categories'), 200);
     }
 
     public function destroy(Book $book) {
+        $book->categories()->detach();
+        $book->users()->detach();
+
+        $book->reviews()->delete();
+
         $book->delete();
 
         return response()->noContent();

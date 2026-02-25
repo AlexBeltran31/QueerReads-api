@@ -23,7 +23,7 @@ class ReadingListUpdateTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->putJson("/api/reading-list/{$book->id}", [
+        $response = $this->patchJson("/api/books/{$book->id}/users/{$user->id}", [
             'status' => 'finished'
         ]);
 
@@ -43,7 +43,7 @@ class ReadingListUpdateTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->putJson("/api/reading-list/{$book->id}", [
+        $response = $this->patchJson("/api/books/{$book->id}/users/{$user->id}", [
             'status' => 'reading'
         ]);
 
@@ -61,7 +61,7 @@ class ReadingListUpdateTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->putJson("/api/reading-list/{$book->id}", [
+        $response = $this->patchJson("/api/books/{$book->id}/users/{$user->id}", [
             'status' => 'invalid_status'
         ]);
 
@@ -72,8 +72,9 @@ class ReadingListUpdateTest extends TestCase
     public function guest_cannot_update_reading_list()
     {
         $book = Book::factory()->create();
+        $user = User::factory()->create();
 
-        $response = $this->putJson("/api/reading-list/{$book->id}", [
+        $response = $this->patchJson("/api/books/{$book->id}/users/{$user->id}", [
             'status' => 'reading'
         ]);
 

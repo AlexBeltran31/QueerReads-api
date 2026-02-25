@@ -22,7 +22,7 @@ class AdminCategoryAuthorizationTest extends TestCase
             'slug' => 'poetry',
         ];
 
-        $response = $this->postJson('/api/admin/categories', $payload);
+        $response = $this->postJson('/api/categories', $payload);
 
         $response->assertStatus(403);
 

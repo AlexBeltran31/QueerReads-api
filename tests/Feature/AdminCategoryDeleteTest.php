@@ -20,7 +20,7 @@ class AdminCategoryDeleteTest extends TestCase
         Passport::actingAs($admin);
 
         $response = $this->deleteJson(
-            "/api/admin/categories/{$category->id}"
+            "/api/categories/{$category->id}"
         );
 
         $response->assertStatus(204);

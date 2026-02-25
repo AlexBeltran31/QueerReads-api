@@ -23,7 +23,7 @@ class ReadingListIndexTest extends TestCase
 
         Passport::actingAs($user);
 
-        $response = $this->getJson('/api/reading-list');
+        $response = $this->getJson("/api/users/{$user->id}/books");
 
         $response->assertStatus(200)
                  ->assertJsonFragment([

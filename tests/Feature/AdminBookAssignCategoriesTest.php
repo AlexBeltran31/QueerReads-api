@@ -25,6 +25,10 @@ class AdminBookAssignCategoriesTest extends TestCase
         Passport::actingAs($admin);
 
         $payload = [
+            'title' => $book->title,
+            'author' => $book->author,
+            'description' => $book->description,
+            'category_id' => $category1->id, // requerido por validator
             'categories' => [
                 $category1->id,
                 $category2->id,
@@ -32,7 +36,7 @@ class AdminBookAssignCategoriesTest extends TestCase
         ];
 
         $response = $this->putJson(
-            "/api/admin/books/{$book->id}",
+            "/api/books/{$book->id}",
             $payload
         );
 
